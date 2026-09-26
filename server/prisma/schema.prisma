@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  refreshTokens RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  profile      RiskProfile?
+  portfolios   Portfolio[]
+  watchlist    WatchlistItem[]
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model RiskProfile {
+  id        String   @id @default(cuid())
+  age       Int?
+  income    String?
+  goals     String[]
+  horizon   String?
+  riskLevel String?
+  answers   Json?
+  updatedAt DateTime @updatedAt
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Portfolio {
+  id        String    @id @default(cuid())
+  name      String    @default("My portfolio")
+  createdAt DateTime  @default(now())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  holdings  Holding[]
+}
+
+model Holding {
+  id            String    @id @default(cuid())
+  symbol        String
+  name          String
+  assetType     String
+  quantity      Decimal   @db.Decimal(18, 6)
+  averageCost   Decimal   @db.Decimal(18, 4)
+  createdAt     DateTime  @default(now())
+  portfolioId   String
+  portfolio     Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@index([portfolioId])
+}
+
+model WatchlistItem {
+  id        String   @id @default(cuid())
+  symbol    String
+  name      String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, symbol])
+}
