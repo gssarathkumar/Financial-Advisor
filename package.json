@@ -1,19 +1,57 @@
 {
   "name": "wealthlens",
+  "version": "1.0.0",
+  "description": "WealthLens personal finance dashboard desktop app",
+  "author": "WealthLens",
   "private": true,
-  "workspaces": ["client", "server"],
+  "main": "electron/main.js",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "dev": "concurrently -n client,server -c green,blue \"npm run dev -w client\" \"npm run dev -w server\"",
     "dev:client": "npm run dev -w client",
     "dev:server": "npm run dev -w server",
     "build": "npm run build -w client && npm run build -w server",
     "db:generate": "npm run db:generate -w server",
-    "db:migrate": "npm run db:migrate -w server"
+    "db:migrate": "npm run db:migrate -w server",
+    "desktop": "electron .",
+    "desktop:dev": "electron . --dev",
+    "dist:win": "npm run build && electron-builder --config electron-builder.config.js --win portable",
+    "dist:mac": "npm run build && electron-builder --config electron-builder.config.js --mac dmg"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "@electron/notarize": "^3.1.1",
+    "concurrently": "^9.1.2",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
   },
   "overrides": {
     "deepmerge-ts": "^8.0.0"
+  },
+  "build": {
+    "appId": "com.wealthlens.desktop",
+    "productName": "WealthLens",
+    "files": [
+      "electron/**/*",
+      "client/dist/**/*",
+      "server/dist/**/*",
+      "server/package.json",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "artifactName": "WealthLens-${version}.exe"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "artifactName": "WealthLens-${version}.dmg"
+    }
   }
 }

@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import { createHash, randomBytes } from 'node:crypto'
 import { z } from 'zod'
 import { rateLimit } from 'express-rate-limit'
-import { prisma } from '../lib/prisma.js'
+import { prisma } from '../../lib/prisma.js'
 
 export const authRouter = Router()
 authRouter.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 20, standardHeaders: 'draft-7', legacyHeaders: false }))

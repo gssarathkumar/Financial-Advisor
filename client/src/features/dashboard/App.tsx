@@ -11,7 +11,7 @@ import {
   Area, AreaChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer,
   Tooltip, XAxis, YAxis,
 } from 'recharts'
-import { apiRequest, restoreSession, setAccessToken } from './lib/api'
+import { apiRequest, restoreSession, setAccessToken } from '../../shared/lib/api'
 
 type Page = 'Overview' | 'Markets' | 'My portfolio' | 'SIP planner' | 'Mutual funds' | 'Your plan' | 'Settings'
 type User = { id?: string; name: string; email: string; needsOnboarding?: boolean; riskLevel?: string }

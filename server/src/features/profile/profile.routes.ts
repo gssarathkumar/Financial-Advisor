@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import { prisma } from '../lib/prisma.js'
-import { requireAuth, type AuthRequest } from '../middleware/auth.js'
-import { buildAdvice, type Horizon, type RiskLevel } from '../services/advisor.js'
+import { prisma } from '../../lib/prisma.js'
+import { requireAuth, type AuthRequest } from '../../core/auth.middleware.js'
+import { buildAdvice, type Horizon, type RiskLevel } from '../advice/advice.service.js'
 
 export const apiRouter = Router()
 apiRouter.use(requireAuth)

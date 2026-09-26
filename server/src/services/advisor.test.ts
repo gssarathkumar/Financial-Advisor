@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { buildAdvice } from './advisor.js'
+import { buildAdvice } from '../features/advice/advice.service.js'
 
 test('target allocations always add up to 100 percent', () => {
   for (const risk of ['conservative', 'moderate', 'aggressive'] as const) {
     for (const horizon of ['short', 'medium', 'long'] as const) {
       const { allocation } = buildAdvice(risk, horizon)
-      assert.equal(Object.values(allocation).reduce((total, value) => total + value, 0), 100)
+      const total = Object.values(allocation).reduce((sum, value) => sum + Number(value), 0)
+      assert.equal(total, 100)
     }
   }
 })

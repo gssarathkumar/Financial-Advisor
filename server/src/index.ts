@@ -2,9 +2,9 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import { authRouter } from './routes/auth.js'
-import { apiRouter } from './routes/api.js'
-import { marketRouter } from './routes/markets.js'
+import { authRouter } from './features/auth/auth.routes.js'
+import { apiRouter } from './features/profile/profile.routes.js'
+import { marketRouter } from './features/markets/markets.routes.js'
 
 const app = express()
 const port = Number(process.env.PORT) || 3001

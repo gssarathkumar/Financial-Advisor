@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { marketDataProvider } from '../services/marketData.js'
+import { marketDataProvider } from './marketData.service.js'
 
 export const marketRouter = Router()
 
